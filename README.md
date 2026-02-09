@@ -68,6 +68,26 @@ This modeling choice prioritizes:
 
 ---
 
+## 📊 Model Performance Summary On Store Pefprmance
+| Metric | HIGH_PERFORMANCE | LOW_PERFORMANCE |
+|------|------------------|-----------------|
+| Precision | 0.88 | 0.77 |
+| Recall | 0.51 | 0.96 |
+| Accuracy | **80%** | |
+
+
+## 🔍 Key Takeaway
+The model is **precision-focused**, ensuring that when a store is classified as HIGH_PERFORMANCE, the prediction is highly reliable.
+
+---
+
+## 🚀 Next Steps
+- Threshold tuning to balance precision vs recall
+- Feature expansion (seasonality, product mix)
+- Deployment for real-time monitoring
+
+---
+
 ## 📊 Model Performance
 
 ### Actual vs Predicted Revenue

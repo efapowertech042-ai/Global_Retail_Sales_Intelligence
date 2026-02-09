@@ -4,7 +4,7 @@ USE ds_sales_performance;
 -- Drop monthly_sales table if exists --
 DROP TABLE IF EXISTS store_monthly_revenue;
 
--- Monthly Store Revenue --
+-- Monthly Store Revenue (Ground Truth) --
 CREATE TABLE store_monthly_revenue AS
 SELECT
     s.STOREKEY,
@@ -16,7 +16,7 @@ LEFT JOIN products_clean p
 GROUP BY
     s.STOREKEY,
     MONTH_DATE;
-
+    
 -- Lag & Growth Features (Window Functions) --
 CREATE TABLE store_features AS
 SELECT
@@ -40,6 +40,7 @@ SELECT
 FROM store_monthly_revenue;
 
 -- Add Rolling Averages (Stability Indicator) --
+CREATE TABLE store_features_enriched AS
 SELECT
     *,
     AVG(MONTHLY_REVENUE) OVER (
@@ -48,3 +49,33 @@ SELECT
         ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
     ) AS ROLLING_3M_REVENUE
 FROM store_features;
+
+-- Rank revenue per month --
+CREATE TABLE store_ranked AS
+SELECT
+    *,
+    NTILE(4) OVER (
+        PARTITION BY MONTH_DATE
+        ORDER BY MONTHLY_REVENUE
+    ) AS REVENUE_QUARTILE
+FROM store_monthly_revenue;
+
+-- Operational Risk Label (Binary)--
+CREATE TABLE store_labeled AS
+SELECT
+    *,
+    CASE
+        WHEN REVENUE_QUARTILE = 1 THEN 'RISK'
+        ELSE 'NON_RISK'
+    END AS STORE_RISK_LABEL
+FROM store_ranked;
+
+-- Assign performance labels --
+CREATE TABLE store_labeled_2 AS
+SELECT
+    *,
+    CASE
+        WHEN REVENUE_QUARTILE = 4 THEN 'HIGH_PERFORMANCE'
+        ELSE 'LOW_PERFORMANCE'
+    END AS STORE_PERFORMANCE_LABEL
+FROM store_ranked;

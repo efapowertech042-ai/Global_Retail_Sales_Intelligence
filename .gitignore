@@ -1,0 +1,44 @@
+# -----------------------
+# Tableau backup/temp files
+# -----------------------
+~*.twbr
+*.twbx~
+*.twb~
+*.bak
+*.save
+
+# -----------------------
+# Python cache files
+# -----------------------
+__pycache__/
+*.py[cod]
+*.pyo
+
+# -----------------------
+# Virtual environments (if used)
+# -----------------------
+env/
+venv/
+*.venv/
+.ipynb_checkpoints/
+
+
+# -----------------------
+# Data files (optional)
+# -----------------------
+# Uncomment if you want to ignore large local datasets
+# data/*.csv
+# data/*.xlsx
+
+# -----------------------
+# Images/screenshots (optional)
+# -----------------------
+# Uncomment if you don't want to track local screenshots
+# Insights/Images/*.png
+# Insights/Images/*.jpg
+
+# -----------------------
+# Operating system files
+# -----------------------
+.DS_Store
+Thumbs.db
